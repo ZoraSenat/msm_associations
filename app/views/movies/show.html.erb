@@ -28,9 +28,9 @@
       <dt>Cast</dt>
       <dd>
         <ul class="list-unstyled">
-          <% Character.where(:movie_id => @movie.id).each do |character| %>
+          <% @movie.characters.each do |character| %>
           <li>
-            <a href="/actors/<%= Actor.find_by(:id => character.actor_id).id %>"><%= Actor.find_by(:id => character.actor_id).name %></a> (<%= character.name %>)
+            <a href="/actors/<%= character.actor.try(:id) %>"><%= character.actor.try(:name) %></a> (<%= character.try(:name) %>)
           </li>
           <% end %>
         </ul>
