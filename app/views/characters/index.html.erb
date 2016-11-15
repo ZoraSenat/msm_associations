@@ -17,10 +17,15 @@
 
       <% @characters.each do |character| %>
       <tr>
-        <td><a href="/movies/<%= Movie.find_by(:id => character.movie_id ).id %>"><%= Movie.find_by(:id => character.movie_id ).title %></a> </td>
         <td>
-          <a href="actors/<%= Actor.find_by(:id => character.actor_id).id%>">
-          <%= Actor.find_by(:id => character.actor_id).name %></a>
+          <a href="/movies/<%= Movie.find_by(:id => character.movie_id).id %>">
+            <%= Movie.find_by(:id => character.movie_id ).title %>
+          </a>
+        </td>
+        <td>
+          <a href="actors/<%= Actor.find_by(:id => character.actor_id).id %>">
+            <%= Actor.find_by(:id => character.actor_id).name %>
+          </a>
         </td>
         <td><%= character.name %></td>
         <td>
@@ -29,6 +34,7 @@
           <a href="/delete_character/<%= character.id %>" class="btn btn-danger" rel="nofollow">Delete</a>
         </td>
         <% end %>
+
       </tr>
     </table>
   </div>
