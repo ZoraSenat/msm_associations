@@ -12,10 +12,59 @@
       <dd><%= @director.dob %></dd>
 
       <dt>Bio</dt>
-      <dd><%= @director.bio %></dd>
+      <dd><%= truncate(@director.bio) %></dd>
 
       <dt>Image url</dt>
       <dd><%= @director.image_url %></dd>
+
+      <dt>Number of Films</dt>
+      <dd><%= Movie.where(:director_id => @director.id).count %></dd>
+
+      <dt>Filmography</dt>
+      <dd>
+        <ul class="list-unstyled">
+          <% Movie.where(:director_id => @director.id).each do |movie| %>
+          <li>
+            <a href="/movies/<%= movie.id %>"><%= movie.title %></a>
+          </li>
+          <% end %>
+        </ul>
+      </dd>
+
+      <dt>Add New Movie</dt>
+      <dd>
+          <form action="/create_movie" method="post">
+            <!-- Hidden input for authenticity token to protect from forgery -->
+            <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+            <!-- Label and input for title -->
+            <div class="form-group">
+              <label for="title" class="control-label">
+                Title
+              </label>
+
+              <input type="text" id="title" name="title" placeholder="Title" class="form-control">
+            </div>
+
+            <!-- Label and input for year -->
+            <div class="form-group">
+              <label for="year" class="control-label">
+                Year
+              </label>
+
+              <input type="text" id="year" name="year" placeholder="Year" class="form-control">
+
+              <input type="hidden" id="director_id" name="director_id" value="<%= @director.id %>">
+            </div>
+
+            <button class="btn btn-success">
+              Create Movie
+            </button>
+            or
+            <a href="/movies">Cancel</a>
+          </form>
+
+      </dd>
 
     </dl>
 
@@ -31,4 +80,21 @@
       </a>
     </div>
   </div>
+
 </div>
+
+
+<!-- <tr>
+<th>First name</th>
+<th>Last name</th>
+</tr>
+<tr>
+<td>John</td>
+<td>Doe</td>
+</tr>
+<tr>
+<td>Jane</td>
+<td>Doe</td>
+</tr> -->
+
+</table>
