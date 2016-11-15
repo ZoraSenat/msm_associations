@@ -22,18 +22,65 @@
 
       <dt>Director</dt>
       <dd><a href="/directors/<%=Director.find_by(:id => @movie.director_id).id%>"><%=Director.find_by(:id => @movie.director_id).name %></a></dd>
-    </dl>
 
-    <div class="btn-group btn-group-justified">
-      <a href="/movies" class="btn btn-primary">
-        Back
-      </a>
-      <a href="/movies/<%= @movie.id %>/edit" class="btn btn-warning">
-        Edit
-      </a>
-      <a href="/delete_movie/<%= @movie.id %>" class="btn btn-danger" rel="nofollow">
-        Delete
-      </a>
+      <dt>Cast</dt>
+      <dd>
+        <ul class="list-unstyled">
+          <% Character.where(:movie_id => @movie.id).each do |character| %>
+          <li>
+            <a href="/actors/<%= Actor.find_by(:id => character.actor_id).id %>"><%= Actor.find_by(:id => character.actor_id).name %></a> (<%= character.name %>)
+          </li>
+          <% end %>
+        </ul>
+      </dd>
+      <dt>Add New Character</dt>
+      <dd>
+        <form action="/create_character" method="post">
+          <!-- Hidden input for authenticity token to protect from forgery -->
+          <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+          <!-- Label and input for actor -->
+          <div class="form-group">
+            <label for="actor" class="control-label">
+              Actor
+            </label>
+
+            <%= select_tag(:actor_id, options_from_collection_for_select(Actor.all, :id, :name), :class => "form-control") %>
+
+            <a href="/actors/new">Or create new actor</a>
+
+            <!-- Label and input for name -->
+            <div class="form-group">
+              <label for="name" class="control-label">
+                Name
+              </label>
+
+              <input type="text" id="name" name="name" placeholder="Name" class="form-control">
+
+              <!-- Input for hidden movie_id field-->
+              <input type="hidden" id="movie_id" name="movie_id" value="<%= @movie.id %>">
+            </div>
+
+            <button class="btn btn-success">
+              Create Character
+            </button>
+            or
+            <a href="/characters">Cancel</a>
+          </form>
+        </dd>
+
+      </dl>
+
+      <div class="btn-group btn-group-justified">
+        <a href="/movies" class="btn btn-primary">
+          Back
+        </a>
+        <a href="/movies/<%= @movie.id %>/edit" class="btn btn-warning">
+          Edit
+        </a>
+        <a href="/delete_movie/<%= @movie.id %>" class="btn btn-danger" rel="nofollow">
+          Delete
+        </a>
+      </div>
     </div>
   </div>
-</div>
